@@ -5,7 +5,8 @@
         "php": ">=5.5.9",
         "laravel/lumen-framework": "5.2.*",
         "vlucas/phpdotenv": "~2.2",
-        "guzzlehttp/guzzle": "^6.1"
+        "guzzlehttp/guzzle": "^5.0",
+        "dosomething/northstar": "^0.1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -23,9 +23,8 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
-
-// $app->withEloquent();
+// Register configuration files
+$app->configure('services');
 
 /*
 |--------------------------------------------------------------------------
@@ -78,7 +77,8 @@ $app->singleton(
 |
 */
 
- $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(DoSomething\Northstar\NorthstarServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*

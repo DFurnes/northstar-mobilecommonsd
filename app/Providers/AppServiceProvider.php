@@ -14,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(MobileCommons::class, function() {
+        $this->app->singleton(MobileCommons::class, function () {
             return new MobileCommons([
                 'username' => env('MOBILE_COMMONS_USERNAME'),
                 'password' => env('MOBILE_COMMONS_PASSWORD'),

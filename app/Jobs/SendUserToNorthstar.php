@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-class ExampleJob extends Job
+class SendUserToNorthstar extends Job
 {
     /**
      * Create a new job instance.

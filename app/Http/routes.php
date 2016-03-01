@@ -5,8 +5,7 @@
  * expose a simple status endpoint for debugging/monitoring.
  */
 $app->get('/', function () use ($app) {
-    app('\App\Services\MobileCommons');
     return response()->json([
-        'lumen' => $app->version()
+        'lumen' => $app->version(),
     ]);
 });

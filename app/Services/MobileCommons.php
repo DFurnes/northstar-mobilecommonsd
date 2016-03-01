@@ -41,7 +41,6 @@ class MobileCommons
         // @TODO
     }
 
-
     /**
      * Parse XML responses into an associative array. Plucked from the
      * remnants of the pre-PSR7 Guzzle. RIP.

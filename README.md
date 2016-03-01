@@ -1,4 +1,4 @@
-# mobilecommonsd [![Wercker](https://img.shields.io/wercker/ci/548f17b907fa3ea41500a0ec.svg?style=flat-square)](https://app.wercker.com/#applications/548f17b907fa3ea41500a0ec) [![StyleCI](https://styleci.io/repos/26884886/shield)](https://styleci.io/repos/26884886)
+# mobilecommonsd [![Wercker](https://img.shields.io/wercker/ci/56d5b4f8ef55576f3c03451a.svg?style=flat-square)](https://app.wercker.com/#applications/56d5b4f8ef55576f3c03451a) [![StyleCI](https://styleci.io/repos/52885874/shield)](https://styleci.io/repos/52885874)
 
 This is Northstar's __mobilecommonsd__, a lightweight worker which synchronizes changes in
 [Mobile Commons](https://mobilecommons.com) profiles into our user API. It is built using

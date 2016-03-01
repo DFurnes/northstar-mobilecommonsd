@@ -1,16 +1,12 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It is a breeze. Simply tell Lumen the URIs it should respond to
-| and give it the Closure to call when that URI is requested.
-|
-*/
-
+/**
+ * Since this application is primarily a queue worker, we just
+ * expose a simple status endpoint for debugging/monitoring.
+ */
 $app->get('/', function () use ($app) {
-    return $app->version();
+    app('\App\Services\MobileCommons');
+    return response()->json([
+        'lumen' => $app->version()
+    ]);
 });

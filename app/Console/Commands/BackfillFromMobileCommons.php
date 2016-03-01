@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Synchronizer;
+use App\Jobs\LoadPaginatedResults;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class BackfillFromMobileCommons extends Command
@@ -22,31 +23,15 @@ class BackfillFromMobileCommons extends Command
     protected $description = 'Backfill existing records from Mobile Commons into Northstar.';
 
     /**
-     * The synchronizer.
-     * @var Synchronizer
-     */
-    protected $synchronizer;
-
-    /**
-     * Create BackfillFromMobileCommons command.
-     * @param Synchronizer $synchronizer
-     */
-    public function __construct(Synchronizer $synchronizer)
-    {
-        $this->synchronizer = $synchronizer;
-
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
      */
     public function handle()
     {
-        $this->info('Under construction!');
+        $this->info('Starting backfill process...');
 
-        $this->synchronizer->backfill();
+        // Sample of 2729 profiles to backfill... 27 pages!
+        dispatch(new LoadPaginatedResults(Carbon::parse('April 1 2009'), Carbon::parse('April 3 2009'), 25));
     }
 }

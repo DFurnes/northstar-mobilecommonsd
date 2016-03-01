@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use Carbon\Carbon;
+use SimpleXMLElement;
 
 class MobileCommons
 {
@@ -12,6 +13,13 @@ class MobileCommons
      * @var Client
      */
     protected $client;
+
+    /**
+     * The number of results to fetch per page.
+     *
+     * @var int
+     */
+    protected $limit = 100;
 
     /**
      * Make a new MobileCommons API client.
@@ -37,21 +45,38 @@ class MobileCommons
      * @see <https://mobilecommons.zendesk.com/hc/en-us/articles/202052534-REST-API#ListAllProfiles>
      * @param Carbon $start
      * @param Carbon $end
-     * @param int $limit
      * @param int $page
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
-    public function listAllProfiles($start, $end, $limit = 50, $page = 1)
+    public function listAllProfiles($start = null, $end = null, $page = 1)
     {
+        $query = [
+            'limit' => $this->limit,
+            'page' => $page,
+        ];
+
+        if (! is_null($start)) {
+            $query['from'] = $start->toIso8601String();
+        }
+
+        if (! is_null($end)) {
+            $query['to'] = $end->toISO8601String();
+        }
+
         $response = $this->client->get('profiles', [
-            'query' => [
-                'start' => $start->toIso8601String(),
-                'end' => $end->toISO8601String(),
-                'limit' => $limit,
-                'page' => $page,
-            ],
+            'query' => $query,
         ]);
 
         return $response->xml();
+    }
+
+    /**
+     * Return the current limit being fetched per page.
+     *
+     * @return int
+     */
+    public function getLimit()
+    {
+        return $this->limit;
     }
 }

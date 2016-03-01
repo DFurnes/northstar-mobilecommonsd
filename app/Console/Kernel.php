@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'mobilecommons:fetch' => Commands\FetchUpdatesFromMobileCommons::class,
+        'mobilecommons:backfill' => Commands\BackfillFromMobileCommons::class,
     ];
 
     /**

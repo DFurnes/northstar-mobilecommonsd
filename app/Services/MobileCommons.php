@@ -19,8 +19,10 @@ class MobileCommons
     public function __construct(array $config)
     {
         $this->client = new Client([
-            'base_uri' => 'https://secure.mcommons.com/api/profile',
-            'auth' => [$config['username'], $config['password']],
+            'base_url' => 'https://secure.mcommons.com/api/',
+            'defaults' => [
+                'auth' => [$config['username'], $config['password']],
+            ]
         ]);
     }
 
@@ -35,6 +37,8 @@ class MobileCommons
      */
     public function listAllProfiles($start, $end, $page, $limit = 100)
     {
+        $response = $this->client->get('profile');
+
         // @TODO
     }
 }

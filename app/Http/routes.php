@@ -6,6 +6,6 @@
  */
 $app->get('/', function () use ($app) {
     return response()->json([
-        'lumen' => $app->version()
+        'lumen' => $app->version(),
     ]);
 });

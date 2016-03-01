@@ -22,7 +22,7 @@ class MobileCommons
             'base_url' => 'https://secure.mcommons.com/api/',
             'defaults' => [
                 'auth' => [$config['username'], $config['password']],
-            ]
+            ],
         ]);
     }
 

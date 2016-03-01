@@ -11,8 +11,8 @@ class ExampleTest extends TestCase
     {
         $this->get('/');
 
-        $this->assertEquals(
-            $this->response->getContent(), $this->app->version()
-        );
+        $content = json_decode($this->response->getContent());
+
+        $this->assertEquals($content->lumen, $this->app->version());
     }
 }

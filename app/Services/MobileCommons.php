@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use Carbon\Carbon;
 
 class MobileCommons
 {
@@ -29,16 +30,28 @@ class MobileCommons
     /**
      * List all profiles changed within the given time frame.
      *
+     * Gotcha: Mobile Commons will return the number of elements in *this* XML response,
+     * not the total matching the query. So, if <profiles num=$limit>, then you should
+     * ask for the next page... yeah.
+     *
      * @see <https://mobilecommons.zendesk.com/hc/en-us/articles/202052534-REST-API#ListAllProfiles>
-     * @param $start
-     * @param $end
-     * @param $page
+     * @param Carbon $start
+     * @param Carbon $end
      * @param int $limit
+     * @param int $page
+     * @return \SimpleXMLElement
      */
-    public function listAllProfiles($start, $end, $page, $limit = 100)
+    public function listAllProfiles($start, $end, $limit = 50, $page = 1)
     {
-        $response = $this->client->get('profile');
+        $response = $this->client->get('profiles', [
+            'query' => [
+                'start' => $start->toIso8601String(),
+                'end' => $end->toISO8601String(),
+                'limit' => $limit,
+                'page' => $page,
+            ],
+        ]);
 
-        // @TODO
+        return $response->xml();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\MobileCommons;
+use App\Synchronizer;
 use Illuminate\Console\Command;
 
 class BackfillFromMobileCommons extends Command
@@ -22,19 +22,18 @@ class BackfillFromMobileCommons extends Command
     protected $description = 'Backfill existing records from Mobile Commons into Northstar.';
 
     /**
-     * The Mobile Commons API client.
-     *
-     * @var MobileCommons
+     * The synchronizer.
+     * @var Synchronizer
      */
-    protected $mobileCommons;
+    protected $synchronizer;
 
     /**
      * Create BackfillFromMobileCommons command.
-     * @param MobileCommons $mobileCommons
+     * @param Synchronizer $synchronizer
      */
-    public function __construct(MobileCommons $mobileCommons)
+    public function __construct(Synchronizer $synchronizer)
     {
-        $this->mobileCommons = $mobileCommons;
+        $this->synchronizer = $synchronizer;
 
         parent::__construct();
     }
@@ -47,5 +46,7 @@ class BackfillFromMobileCommons extends Command
     public function handle()
     {
         $this->info('Under construction!');
+
+        $this->synchronizer->backfill();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\MobileCommons;
+use App\Synchronizer;
 use Illuminate\Console\Command;
 
 class FetchUpdatesFromMobileCommons extends Command
@@ -22,12 +22,18 @@ class FetchUpdatesFromMobileCommons extends Command
     protected $description = 'Fetch new/updated records from Mobile Commons and push to Northstar.';
 
     /**
-     * Create FetchUpdatesFromMobileCommons command.
-     * @param MobileCommons $mobileCommons
+     * The synchronizer.
+     * @var Synchronizer
      */
-    public function __construct(MobileCommons $mobileCommons)
+    protected $synchronizer;
+
+    /**
+     * Create FetchUpdatesFromMobileCommons command.
+     * @param Synchronizer $synchronizer
+     */
+    public function __construct(Synchronizer $synchronizer)
     {
-        $this->mobileCommons = $mobileCommons;
+        $this->synchronizer = $synchronizer;
 
         parent::__construct();
     }

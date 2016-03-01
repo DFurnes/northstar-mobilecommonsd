@@ -3,27 +3,34 @@
 namespace App\Jobs;
 
 use DoSomething\Northstar\NorthstarClient;
+use Illuminate\Queue\InteractsWithQueue;
 
 class SendUserToNorthstar extends Job
 {
-    protected $northstar;
+    use InteractsWithQueue;
+
+    /**
+     * Mobile Commons User
+     *
+     * @var array
+     */
+    protected $user;
 
     /**
      * Create a new job instance.
-     * @param NorthstarClient $northstar
+     * @param array $user
      */
-    public function __construct(NorthstarClient $northstar)
+    public function __construct(array $user)
     {
-        $this->northstar = $northstar;
-        //
+        $this->user = $user;
     }
 
     /**
      * Execute the job.
      *
-     * @return void
+     * @param NorthstarClient $northstar
      */
-    public function handle()
+    public function handle(NorthstarClient $northstar)
     {
         //
     }

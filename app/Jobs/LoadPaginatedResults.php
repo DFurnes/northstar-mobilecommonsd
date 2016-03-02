@@ -103,15 +103,17 @@ class LoadPaginatedResults extends Job
     public function transformStatus($status)
     {
         // @see: https://mobilecommons.zendesk.com/hc/en-us/articles/202052284-Profiles
-        $tokens = [
-            'Undeliverable' => 'UNDELIVERABLE', // Phone number can't receive texts
-            'Active Subscriber' => 'ACTIVE',
-            'No Subscriptions' => 'OPTED_OUT', // User is not opted in to any MC campaigns
-            'Hard bounce' => 'UNDELIVERABLE', // Invalid mobile number
-            'Texted a STOP word' => 'OPTED_OUT' // User opted-out by texting STOP
+        $statusTokens = [
+            'Undeliverable' => 'undeliverable', // Phone number can't receive texts
+            'Hard bounce' => 'undeliverable', // Invalid mobile number
+            'No Subscriptions' => 'opted_out', // User is not opted in to any MC campaigns
+            'Texted a STOP word' => 'opted_out', // User opted-out by texting STOP
+            'Active Subscriber' => 'active',
         ];
 
-        // Map to normalized status keywords, or `UNDELIVERABLE` on unknown status
-        return array_get($tokens, (string) $status, 'UNDELIVERABLE');
+        // Map to normalized status keywords, or 'undeliverable' on unknown status
+        return array_get($statusTokens, (string) $status, 'undeliverable');
+    }
+
     }
 }

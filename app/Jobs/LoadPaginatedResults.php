@@ -87,6 +87,7 @@ class LoadPaginatedResults extends Job
             'mobile' => (string) $profile->phone_number,
             'mobilecommons_id' => (string) $profile->attributes()->id,
             'mobilecommons_status' => $this->transformStatus($profile->status),
+            'source' => $this->transformSource($profile->source),
             'created_at' => Carbon::parse((string) $profile->created_at)->format('Y-m-d'),
         ];
 
@@ -115,5 +116,28 @@ class LoadPaginatedResults extends Job
         return array_get($statusTokens, (string) $status, 'undeliverable');
     }
 
+    /**
+     * Transform the contents of the `<profile><source ... /></profile>` field.
+     *
+     * @param SimpleXMLElement[] $source
+     * @return string
+     */
+    public function transformSource($source)
+    {
+        // @see: https://mobilecommons.zendesk.com/hc/en-us/articles/202641890-Glossary
+        $sourceTokens = [
+            'Opt-In Path' => 'opt_in_path',
+            'Keyword' => 'keyword',
+            'Broadcast' => 'broadcast',
+            'Tell A Friend' => 'referral',
+            'mData' => 'mdata',
+        ];
+
+        $type = array_get($sourceTokens, (string) $source->attributes()->type, 'other');
+        $id = (string) $source->attributes()->id;
+        $formattedId = $type !== 'other' ? '/'.$id : '';
+
+        // e.g. 'mobilecommons:opt_in_path/4701'
+        return 'mobilecommons:'.$type.$formattedId;
     }
 }

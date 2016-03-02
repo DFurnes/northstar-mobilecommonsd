@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "26dd01408a4e3e2ad5bab89b0668e342",
-    "content-hash": "221aa060b03bc26fac38a32b9151df25",
+    "hash": "03ebbf6f5c72a6a066a2eac384ab2eb1",
+    "content-hash": "748ac6cf7281593b8067e91d6322fa8b",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -76,16 +76,16 @@
         },
         {
             "name": "dosomething/northstar",
-            "version": "v0.1",
+            "version": "v0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DoSomething/northstar-php.git",
-                "reference": "52cf6518ee8ac9e359d58c6615698fe686341d4a"
+                "reference": "896a4d920620468758d49810fdfd3bfa3ede0d70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DoSomething/northstar-php/zipball/52cf6518ee8ac9e359d58c6615698fe686341d4a",
-                "reference": "52cf6518ee8ac9e359d58c6615698fe686341d4a",
+                "url": "https://api.github.com/repos/DoSomething/northstar-php/zipball/896a4d920620468758d49810fdfd3bfa3ede0d70",
+                "reference": "896a4d920620468758d49810fdfd3bfa3ede0d70",
                 "shasum": ""
             },
             "require": {
@@ -111,7 +111,7 @@
                 }
             ],
             "description": "PHP API client for Northstar, the DoSomething.org user API.",
-            "time": "2016-02-29 15:52:35"
+            "time": "2016-03-02 15:09:10"
         },
         {
             "name": "giggsey/libphonenumber-for-php",
@@ -1480,16 +1480,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.17.2",
+            "version": "1.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24"
+                "reference": "e19b764b5c855580e8ffa7e615f72c10fd2f99cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
-                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/e19b764b5c855580e8ffa7e615f72c10fd2f99cc",
+                "reference": "e19b764b5c855580e8ffa7e615f72c10fd2f99cc",
                 "shasum": ""
             },
             "require": {
@@ -1518,6 +1518,7 @@
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server",
                 "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
                 "php-console/php-console": "Allow sending log messages to Google Chrome",
                 "raven/raven": "Allow sending log messages to a Sentry server",
                 "rollbar/rollbar": "Allow sending log messages to Rollbar",
@@ -1527,7 +1528,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -1553,7 +1554,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-10-14 12:51:02"
+            "time": "2016-03-01 18:00:40"
         },
         {
             "name": "mtdowling/cron-expression",

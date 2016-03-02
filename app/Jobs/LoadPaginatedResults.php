@@ -112,8 +112,8 @@ class LoadPaginatedResults extends Job
             'Active Subscriber' => 'active',
         ];
 
-        // Map to normalized status keywords, or 'undeliverable' on unknown status
-        return array_get($statusTokens, (string) $status, 'undeliverable');
+        // Map to normalized status keywords, or 'unknown' on unknown status
+        return array_get($statusTokens, (string) $status, 'unknown');
     }
 
     /**
@@ -131,13 +131,13 @@ class LoadPaginatedResults extends Job
             'Broadcast' => 'broadcast',
             'Tell A Friend' => 'referral',
             'mData' => 'mdata',
+            'Unknown' => 'unknown',
         ];
 
         $type = array_get($sourceTokens, (string) $source->attributes()->type, 'other');
         $id = (string) $source->attributes()->id;
-        $formattedId = $type !== 'other' ? '/'.$id : '';
 
         // e.g. 'mobilecommons:opt_in_path/4701'
-        return 'mobilecommons:'.$type.$formattedId;
+        return 'mobilecommons:'.$type.(! empty($id) ? '/' : '').$id;
     }
 }

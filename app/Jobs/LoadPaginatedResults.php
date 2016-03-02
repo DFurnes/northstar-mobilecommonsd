@@ -35,7 +35,7 @@ class LoadPaginatedResults extends Job
      * @param Carbon $end
      * @param $page
      */
-    public function __construct(Carbon $start, Carbon $end, $page)
+    public function __construct(Carbon $start, Carbon $end, $page = 1)
     {
         $this->start = $start;
         $this->end = $end;
@@ -82,12 +82,36 @@ class LoadPaginatedResults extends Job
      */
     public function transformProfile(SimpleXMLElement $profile)
     {
-        return [
+        $payload = [
             'first_name' => (string) $profile->first_name,
             'mobile' => (string) $profile->phone_number,
             'mobilecommons_id' => (string) $profile->attributes()->id,
-            'mobilecommons_status' => (string) $profile->status,
+            'mobilecommons_status' => $this->transformStatus($profile->status),
             'created_at' => Carbon::parse((string) $profile->created_at)->format('Y-m-d'),
         ];
+
+        // Return transformed payload, excluding any blank fields.
+        return array_filter($payload);
+    }
+
+    /**
+     * Transform the contents of the `<profile><status>...</status></profile>` field.
+     *
+     * @param SimpleXMLElement[] $status
+     * @return string
+     */
+    public function transformStatus($status)
+    {
+        // @see: https://mobilecommons.zendesk.com/hc/en-us/articles/202052284-Profiles
+        $tokens = [
+            'Undeliverable' => 'UNDELIVERABLE', // Phone number can't receive texts
+            'Active Subscriber' => 'ACTIVE',
+            'No Subscriptions' => 'OPTED_OUT', // User is not opted in to any MC campaigns
+            'Hard bounce' => 'UNDELIVERABLE', // Invalid mobile number
+            'Texted a STOP word' => 'OPTED_OUT' // User opted-out by texting STOP
+        ];
+
+        // Map to normalized status keywords, or `UNDELIVERABLE` on unknown status
+        return array_get($tokens, (string) $status, 'UNDELIVERABLE');
     }
 }

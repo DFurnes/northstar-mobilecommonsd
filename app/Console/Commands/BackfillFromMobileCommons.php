@@ -20,7 +20,7 @@ class BackfillFromMobileCommons extends Command
      *
      * @var string
      */
-    protected $description = 'Backfill existing records from Mobile Commons into Northstar.';
+    protected $description = 'Start jobs to backfill existing records from Mobile Commons into Northstar.';
 
     /**
      * Execute the console command.

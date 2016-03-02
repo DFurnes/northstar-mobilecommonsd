@@ -18,7 +18,7 @@ class FetchUpdatesFromMobileCommons extends Command
      *
      * @var string
      */
-    protected $description = 'Fetch new/updated records from Mobile Commons and push to Northstar.';
+    protected $description = 'Start jobs to fetch new/updated records from Mobile Commons and push to Northstar.';
 
     /**
      * Execute the console command.

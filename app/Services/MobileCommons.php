@@ -51,7 +51,7 @@ class MobileCommons
     public function listAllProfiles($start = null, $end = null, $page = 1)
     {
         $query = [
-            'limit' => $this->limit,
+            'limit' => $this->getLimit(),
             'page' => $page,
         ];
 

@@ -9,7 +9,9 @@ build:
     - leipert/composer-install@0.0.1
     - script:
         name: run phpunit tests
-        code: vendor/bin/phpunit
+        code: |-
+          cp .env.example .env
+          vendor/bin/phpunit
 
 deploy:
   steps:

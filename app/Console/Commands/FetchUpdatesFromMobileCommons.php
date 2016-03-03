@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\LoadPaginatedResults;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class FetchUpdatesFromMobileCommons extends Command
@@ -27,6 +29,17 @@ class FetchUpdatesFromMobileCommons extends Command
      */
     public function handle()
     {
-        $this->info('Under construction!');
+        // @TODO: Load next open time frame from the database.
+        // @TODO: Then, save ✔ to that record when all jobs for that time frame are done.
+        // Save and fetch this from database? POST *should* be idempotent, so
+        // there shouldn't be a downside to running a job every X minutes and
+        // fetching the last X + 5 minutes of records.
+        $start = Carbon::now()->subMinutes(15);
+        $end = Carbon::now();
+
+        $this->info('Loading users from '.$start->diffForHumans().' to now...');
+
+        // Sample of 2729 profiles to backfill... 27 pages!
+        dispatch(new LoadPaginatedResults($start, $end));
     }
 }

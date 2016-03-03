@@ -30,15 +30,14 @@ class SendUserToNorthstar extends Job
      */
     public function handle(NorthstarClient $northstar)
     {
-        $number = (string) $this->user['mobile'];
-        app('log')->debug('Grabbed profile for: '.$number);
+        $mc_id = (string) $this->user['mobilecommons_id'];
 
         try {
             $northstarUser = $northstar->createUser($this->user);
 
-            app('log')->debug('Sent user '.$number.' to NS... saved to '.$northstarUser->id.'!');
+            app('log')->debug('Sent user '.$mc_id.' to NS... saved to '.$northstarUser->id.'!');
         } catch (APIException $e) {
-            app('log')->error('Encountered error saving user '.$number.' to NS.', ['error' => $e]);
+            app('log')->error('Encountered error saving user '.$mc_id.' to NS.', ['error' => $e]);
         }
     }
 }

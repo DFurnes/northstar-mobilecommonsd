@@ -22,4 +22,17 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
         app('Illuminate\Contracts\Bus\Dispatcher');
     }
 
+    /**
+     * Mock a class, and register with the IoC container.
+     *
+     * @param $class String - Class name to mock
+     * @return \Mockery\MockInterface
+     */
+    public function mock($class)
+    {
+        $mock = Mockery::mock($class);
+        $this->app->instance($class, $mock);
+
+        return $mock;
+    }
 }

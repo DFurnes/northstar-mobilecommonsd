@@ -4,9 +4,12 @@ build:
   # The steps that will be executed on build
   steps:
     - script:
-        name: Update Composer
+        name: update composer
         code: sudo composer self-update
     - leipert/composer-install@0.0.1
+    - script:
+        name: run phpunit tests
+        code: vendor/bin/phpunit
 
 deploy:
   steps:

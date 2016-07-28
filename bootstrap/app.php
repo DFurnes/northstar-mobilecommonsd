@@ -79,7 +79,6 @@ $app->singleton(
 
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(DoSomething\Northstar\NorthstarServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

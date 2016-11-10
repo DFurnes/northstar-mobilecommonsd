@@ -31,8 +31,11 @@ class BackfillFromMobileCommons extends Command
     {
         $this->info('Starting backfill process...');
 
-        // @TODO: Set this to load the whoooooole thing.
         // Sample of 2729 profiles to backfill... 27 pages!
-        dispatch(new LoadPaginatedResults(Carbon::parse('April 1 2009'), Carbon::parse('April 3 2009'), 25));
+        $start = Carbon::parse('April 1 2009');
+        $end = Carbon::parse('April 3 2009');
+        $page = 1;
+
+        dispatch(new LoadPaginatedResults($start, $end, $page));
     }
 }

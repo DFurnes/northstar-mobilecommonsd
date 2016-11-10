@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Services\MobileCommons;
 use Carbon\Carbon;
-use SimpleXMLElement;
 
 class LoadPaginatedResults extends Job
 {
@@ -58,9 +57,8 @@ class LoadPaginatedResults extends Job
         $profiles = $response->profiles;
 
         // Transform the returned profiles to arrays & send to Northstar
-        foreach ($profiles->children() as $key => $xml) {
-            $user = $this->transformProfile($xml);
-            dispatch(new SendUserToNorthstar($user));
+        foreach ($profiles->children() as $key => $profile) {
+            dispatch(new SendUserToNorthstar((string) $profile->asXML()));
         }
 
         // Get the number returned from: <profiles num="x">...</profiles>
@@ -72,72 +70,5 @@ class LoadPaginatedResults extends Job
         } else {
             app('log')->debug('That\'s all for now, folks!');
         }
-    }
-
-    /**
-     * Transform an XML profile into an array for submitting to Northstar.
-     *
-     * @param SimpleXMLElement $profile
-     * @return array
-     */
-    public function transformProfile(SimpleXMLElement $profile)
-    {
-        $payload = [
-            'first_name' => (string) $profile->first_name,
-            'mobile' => (string) $profile->phone_number,
-            'mobilecommons_id' => (string) $profile->attributes()->id,
-            'mobilecommons_status' => $this->transformStatus($profile->status),
-            'source' => $this->transformSource($profile->source),
-            'created_at' => Carbon::parse((string) $profile->created_at)->format('Y-m-d'),
-        ];
-
-        // Return transformed payload, excluding any blank fields.
-        return array_filter($payload);
-    }
-
-    /**
-     * Transform the contents of the `<profile><status>...</status></profile>` field.
-     *
-     * @param SimpleXMLElement[] $status
-     * @return string
-     */
-    public function transformStatus($status)
-    {
-        // @see: https://mobilecommons.zendesk.com/hc/en-us/articles/202052284-Profiles
-        $statusTokens = [
-            'Undeliverable' => 'undeliverable', // Phone number can't receive texts
-            'Hard bounce' => 'undeliverable', // Invalid mobile number
-            'No Subscriptions' => 'opted_out', // User is not opted in to any MC campaigns
-            'Texted a STOP word' => 'opted_out', // User opted-out by texting STOP
-            'Active Subscriber' => 'active',
-        ];
-
-        // Map to normalized status keywords, or 'unknown' on unknown status
-        return array_get($statusTokens, (string) $status, 'unknown');
-    }
-
-    /**
-     * Transform the contents of the `<profile><source ... /></profile>` field.
-     *
-     * @param SimpleXMLElement[] $source
-     * @return string
-     */
-    public function transformSource($source)
-    {
-        // @see: https://mobilecommons.zendesk.com/hc/en-us/articles/202641890-Glossary
-        $sourceTokens = [
-            'Opt-In Path' => 'opt_in_path',
-            'Keyword' => 'keyword',
-            'Broadcast' => 'broadcast',
-            'Tell A Friend' => 'referral',
-            'mData' => 'mdata',
-            'Unknown' => 'unknown',
-        ];
-
-        $type = array_get($sourceTokens, (string) $source->attributes()->type, 'other');
-        $id = (string) $source->attributes()->id;
-
-        // e.g. 'mobilecommons:opt_in_path/4701'
-        return 'mobilecommons:'.$type.(! empty($id) ? '/' : '').$id;
     }
 }

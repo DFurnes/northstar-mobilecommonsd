@@ -1,6 +1,6 @@
 <?php
 
-use App\Jobs\LoadPaginatedResults;
+use App\Jobs\LoadResultsFromMobileCommons;
 
 class ArtisanTest extends TestCase
 {
@@ -9,8 +9,8 @@ class ArtisanTest extends TestCase
      */
     public function testBackfillCommand()
     {
-        $this->expectsJobs(LoadPaginatedResults::class);
-        $this->artisan('mobilecommons:backfill');
+        $this->expectsJobs(LoadResultsFromMobileCommons::class);
+        $this->artisan('mobilecommons:backfill', ['start' => '4/1/2009', 'end' => '4/1/2010']);
     }
 
     /**
@@ -18,7 +18,7 @@ class ArtisanTest extends TestCase
      */
     public function testFetchCommand()
     {
-        $this->expectsJobs(LoadPaginatedResults::class);
+        $this->expectsJobs(LoadResultsFromMobileCommons::class);
         $this->artisan('mobilecommons:fetch');
     }
 }

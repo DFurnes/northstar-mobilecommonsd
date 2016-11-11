@@ -2,40 +2,59 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\LoadPaginatedResults;
-use Carbon\Carbon;
+use App\Jobs\LoadResultsFromMobileCommons;
 use Illuminate\Console\Command;
+use Carbon\Carbon;
+use DateInterval;
+use DatePeriod;
 
 class BackfillFromMobileCommons extends Command
 {
     /**
-     * The console command name.
+     * The name and signature of the console command.
      *
      * @var string
      */
-    protected $name = 'mobilecommons:backfill';
+    protected $signature = 'mobilecommons:backfill
+                           {start?} {end?}
+                           {--reset : Force a new backfill job.}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Start jobs to backfill existing records from Mobile Commons into Northstar.';
+    protected $description = 'Backfill profile data from Mobile Commons into Northstar.';
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
-        $this->info('Starting backfill process...');
+        $this->comment('Starting new backfill process...');
 
-        // Sample of 2729 profiles to backfill... 27 pages!
-        $start = Carbon::parse('April 1 2009');
-        $end = Carbon::parse('April 3 2009');
-        $page = 1;
+        if (is_null($start = $this->argument('start'))) {
+            $start = $this->ask('When should the backfill start?', '4/1/2009');
+        }
 
-        dispatch(new LoadPaginatedResults($start, $end, $page));
+        if (is_null($end = $this->argument('end'))) {
+            $end = $this->ask('When should the backfill end?', 'now');
+        }
+
+        // Split the time range into week-long chunks that can be processed in parallel.
+        $interval = new DateInterval('P7D');
+        $periods = collect(new DatePeriod(Carbon::parse($start), $interval, Carbon::parse($end)));
+
+        $this->comment('Queuing jobs to load segments from MobileCommons:');
+        $this->getOutput()->progressStart($periods->count());
+
+        foreach ($periods as $start) {
+            $this->getOutput()->progressAdvance();
+
+            $end = Carbon::parse($start)->add($interval);
+            dispatch(new LoadResultsFromMobileCommons($start, $end));
+        }
+
+        $this->info(PHP_EOL . '✔ Jobs created!');
     }
 }

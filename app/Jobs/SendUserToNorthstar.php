@@ -10,6 +10,13 @@ use SimpleXMLElement;
 class SendUserToNorthstar extends Job
 {
     /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'northstar';
+
+    /**
      * Mobile Commons profile result.
      *
      * @var string

@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use Carbon\Carbon;
-use DoSomething\Northstar\Exceptions\APIException;
-use DoSomething\Northstar\NorthstarClient;
+use DoSomething\Gateway\Exceptions\ApiException;
+use DoSomething\Gateway\Northstar;
 use SimpleXMLElement;
 
 class SendUserToNorthstar extends Job
@@ -28,9 +28,9 @@ class SendUserToNorthstar extends Job
     /**
      * Execute the job.
      *
-     * @param NorthstarClient $northstar
+     * @param Northstar $northstar
      */
-    public function handle(NorthstarClient $northstar)
+    public function handle(Northstar $northstar)
     {
         $xml = new SimpleXMLElement($this->profile);
         $user = $this->transformProfile($xml);
@@ -40,7 +40,7 @@ class SendUserToNorthstar extends Job
             $northstarUser = $northstar->createUser($user);
 
             app('log')->debug('Sent user '.$mc_id.' to NS... saved to '.$northstarUser->id.'!');
-        } catch (APIException $e) {
+        } catch (ApiException $e) {
             app('log')->error('Encountered error saving user '.$mc_id.' to NS.', ['error' => $e]);
         }
     }
@@ -59,7 +59,7 @@ class SendUserToNorthstar extends Job
             'mobilecommons_id' => (string) $profile->attributes()->id,
             'mobilecommons_status' => $this->transformStatus($profile->status),
             'source' => $this->transformSource($profile->source),
-            'created_at' => Carbon::parse((string) $profile->created_at)->toIso8601String(),
+            'created_at' => Carbon::parse((string) $profile->created_at)->timestamp,
         ];
 
         // Return transformed payload, excluding any blank fields.

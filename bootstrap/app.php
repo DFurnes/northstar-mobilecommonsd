@@ -78,7 +78,7 @@ $app->singleton(
 */
 
 $app->register(App\Providers\AppServiceProvider::class);
-$app->register(DoSomething\Northstar\NorthstarServiceProvider::class);
+$app->register(DoSomething\Gateway\Laravel\GatewayServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

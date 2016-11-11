@@ -1,7 +1,7 @@
 <?php
 
 use App\Jobs\LoadPaginatedResults;
-use DoSomething\Northstar\Resources\NorthstarUser;
+use DoSomething\Gateway\Resources\NorthstarUser;
 use Carbon\Carbon;
 
 class JobTest extends TestCase
@@ -23,7 +23,7 @@ class JobTest extends TestCase
         $mobileCommons->shouldReceive('listAllProfiles')->once()->andReturn(new SimpleXMLElement(file_get_contents(__DIR__.'/fixtures/profiles_last.xml')));
 
         // Each profile will trigger a `SendUserToNorthstar` job which posts to NS.
-        $northstarMock = $this->mock(\DoSomething\Northstar\NorthstarClient::class);
+        $northstarMock = $this->mock(\DoSomething\Gateway\Northstar::class);
         $northstarMock->shouldReceive('createUser')->times(6)->andReturn(new NorthstarUser([
             'id' => '5555abc1ef55551234567890',
         ]));

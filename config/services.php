@@ -15,8 +15,13 @@ return [
     */
 
     'northstar' => [
-        'url'     => env('NORTHSTAR_URL'),
-        'api_key' => env('NORTHSTAR_API_KEY'),
+        'grant' => 'client_credentials',
+        'url' => env('NORTHSTAR_URL'),
+        'client_credentials' => [
+            'client_id' => env('NORTHSTAR_CLIENT_ID'),
+            'client_secret' => env('NORTHSTAR_CLIENT_SECRET'),
+            'scope' => ['user', 'admin'],
+        ],
     ],
 
     'mobile_commons' => [

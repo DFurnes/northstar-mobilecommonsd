@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use Carbon\Carbon;
+use GuzzleHttp\Psr7\Response;
 use SimpleXMLElement;
 
 class MobileCommons
@@ -28,10 +29,8 @@ class MobileCommons
     public function __construct(array $config)
     {
         $this->client = new Client([
-            'base_url' => 'https://secure.mcommons.com/api/',
-            'defaults' => [
-                'auth' => [$config['username'], $config['password']],
-            ],
+            'base_uri' => 'https://secure.mcommons.com/api/',
+            'auth' => [$config['username'], $config['password']],
         ]);
     }
 
@@ -60,14 +59,14 @@ class MobileCommons
         }
 
         if (! is_null($end)) {
-            $query['to'] = $end->toISO8601String();
+            $query['to'] = $end->toIso8601String();
         }
 
         $response = $this->client->get('profiles', [
             'query' => $query,
         ]);
 
-        return $response->xml();
+        return $this->parseXml($response);
     }
 
     /**
@@ -78,5 +77,16 @@ class MobileCommons
     public function getLimit()
     {
         return $this->limit;
+    }
+
+    /**
+     * Parse XML from PSR-7 responses.
+     *
+     * @param Response $response
+     * @return SimpleXMLElement
+     */
+    public function parseXml(Response $response)
+    {
+        return new SimpleXMLElement((string) $response->getBody() ?: '<root />', LIBXML_NONET);
     }
 }

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b8efffaf6903ea1877e7472947955e33",
-    "content-hash": "1677cfd1538cc791e3839ee70634d8bf",
+    "hash": "4e00acc793a024748c87bf49a5ddecc8",
+    "content-hash": "c6754ec809ee9ab90c080873dbd6763b",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -76,16 +76,16 @@
         },
         {
             "name": "dosomething/gateway",
-            "version": "v1.0.0-rc14",
+            "version": "v1.0.0-rc15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DoSomething/gateway.git",
-                "reference": "2de6ade1b724fc93353545996426ecee49b7cd7e"
+                "reference": "407a049c49a17368319fc34965c9b6700146ca72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DoSomething/gateway/zipball/2de6ade1b724fc93353545996426ecee49b7cd7e",
-                "reference": "2de6ade1b724fc93353545996426ecee49b7cd7e",
+                "url": "https://api.github.com/repos/DoSomething/gateway/zipball/407a049c49a17368319fc34965c9b6700146ca72",
+                "reference": "407a049c49a17368319fc34965c9b6700146ca72",
                 "shasum": ""
             },
             "require": {
@@ -99,7 +99,8 @@
             },
             "require-dev": {
                 "illuminate/database": "^5.2",
-                "phpunit/phpunit": "^4.8"
+                "phpunit/phpunit": "^4.8",
+                "symfony/var-dumper": "^3.1"
             },
             "type": "library",
             "autoload": {
@@ -121,7 +122,7 @@
                 }
             ],
             "description": "Standard PHP API client for DoSomething.org services.",
-            "time": "2016-10-06 20:04:26"
+            "time": "2016-11-11 15:04:54"
         },
         {
             "name": "giggsey/libphonenumber-for-php",

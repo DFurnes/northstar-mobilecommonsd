@@ -83,11 +83,8 @@ class SendUserToNorthstar extends Job
     {
         // @see: https://mobilecommons.zendesk.com/hc/en-us/articles/202052284-Profiles
         $statusTokens = [
-            'Undeliverable' => 'undeliverable', // Phone number can't receive texts
-            'Hard bounce' => 'bounce', // Invalid mobile number
-            'No Subscriptions' => 'no_subscriptions', // User is not opted in to any MC campaigns
-            'Texted a STOP word' => 'opted_out', // User opted-out by texting STOP
             'Active Subscriber' => 'active',
+            'Undeliverable' => 'undeliverable', // Invalid mobile, can't receive texts, or texted STOP
         ];
 
         // Map to normalized status keywords, or 'unknown' on unknown status

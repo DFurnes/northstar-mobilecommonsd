@@ -3,7 +3,6 @@
 use Carbon\Carbon;
 use App\Jobs\LoadResultsFromMobileCommons;
 use DoSomething\Gateway\Resources\NorthstarUser;
-use Carbon\Carbon;
 
 class JobTest extends TestCase
 {

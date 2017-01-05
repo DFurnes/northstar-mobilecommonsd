@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use GuzzleHttp\Client;
 use Carbon\Carbon;
-use Psr\Http\Message\ResponseInterface;
 use SimpleXMLElement;
+use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
 class MobileCommons
 {

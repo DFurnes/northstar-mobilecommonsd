@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Services\MobileCommons;
 use Carbon\Carbon;
+use App\Services\MobileCommons;
 
 class LoadResultsFromMobileCommons extends Job
 {

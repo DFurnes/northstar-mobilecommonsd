@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\LoadResultsFromMobileCommons;
-use Illuminate\Console\Command;
-use Carbon\Carbon;
-use DateInterval;
 use DatePeriod;
+use DateInterval;
+use Carbon\Carbon;
+use Illuminate\Console\Command;
+use App\Jobs\LoadResultsFromMobileCommons;
 
 class BackfillFromMobileCommons extends Command
 {

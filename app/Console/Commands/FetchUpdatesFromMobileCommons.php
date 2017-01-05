@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\LoadResultsFromMobileCommons;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use App\Jobs\LoadResultsFromMobileCommons;
 
 class FetchUpdatesFromMobileCommons extends Command
 {

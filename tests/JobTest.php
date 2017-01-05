@@ -1,8 +1,8 @@
 <?php
 
-use App\Jobs\LoadPaginatedResults;
-use DoSomething\Gateway\Resources\NorthstarUser;
 use Carbon\Carbon;
+use App\Jobs\LoadResultsFromMobileCommons;
+use DoSomething\Gateway\Resources\NorthstarUser;
 
 class JobTest extends TestCase
 {
@@ -29,6 +29,6 @@ class JobTest extends TestCase
         ]));
 
         // And.... go!
-        dispatch(new LoadPaginatedResults(Carbon::now()->subMinutes(10), Carbon::now()));
+        dispatch(new LoadResultsFromMobileCommons(Carbon::now()->subMinutes(10), Carbon::now()));
     }
 }

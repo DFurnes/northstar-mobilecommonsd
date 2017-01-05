@@ -7,18 +7,42 @@ Mobile Commons should be reflected in Northstar within 5 minutes.
 ### Commands
 Mobilecommonsd has two commands:
 
-`mobilecommons:backfill` will fill in historical profile changes by iterating over the entire history
+`mobilecommons:backfill` will create jobs to fill in historical profile data by iterating over the entire history
 provided by Mobile Common's [`profiles` endpoint](https://mobilecommons.zendesk.com/hc/en-us/articles/202052534-REST-API#ListAllProfiles).
+This command **only needs to be run once** in order to "kick off" the process. After that, the queue listeners will
+continue working until they're done!
 
-`mobilecommons:fetch` synchronizes any profiles changes from Mobile Commons to the associated Northstar
-profile. It runs every 5 minutes, scheduled by the Artisan Kernel.
+`mobilecommons:fetch` synchronizes any recent profiles changes from Mobile Commons to the associated Northstar
+profile. It should run automatically every 5 minutes, [scheduled by the Artisan Kernel](https://laravel.com/docs/5.3/scheduling).
 
 ### Implementation
-Both of the above commands rely on the [`LoadPaginatedResults`]() and [`SendUserToNorthstar`]() queued jobs.
-We use Laravel's [built-in queue daemon](https://laravel.com/docs/5.3/queues#running-the-queue-worker) to process these jobs and
-handle retries and failures.
+Both of the above commands rely on the [`LoadResultsFromMobileCommons`](https://github.com/DoSomething/northstar-mobilecommonsd/blob/dev/app/Jobs/LoadResultsFromMobileCommons.php)
+and [`SendUserToNorthstar`](https://github.com/DoSomething/northstar-mobilecommonsd/blob/dev/app/Jobs/SendUserToNorthstar.php) queued jobs.
 
 All updates are sent to Northstar's [create user](https://github.com/DoSomething/northstar/blob/dev/documentation/endpoints/users.md#create-a-user) endpoint
 and rely on its upsert functionality to match changes to the correct profile. This allows us to fill missing fields on existing
 accounts or create new accounts without any complicated logic in this service.
 
+### Queue Listeners
+We use Laravel's [built-in queue daemon](https://laravel.com/docs/5.3/queues#running-the-queue-worker) to process these jobs and
+handle retries and failures. This makes it easy for us to scale to meet demand (by increasing the number
+of processes assigned to a particular queue) and easily handle retries and tracking failures.
+
+To start a worker that will fetch user data from MobileCommons:
+ 
+```bash
+php artisan queue:work --queue=mobilecommons
+```
+
+To start a worker that will send any fetched users to Northstar:
+```bash
+php artisan queue:work --queue=northstar
+```
+
+It probably makes sense to have two or three Northstar queue workers per MobileCommons queue worker.
+
+### In case of emergency…
+If a task could not be completed successfully (for example, if MobileCommons or Northstar timeout or return an error),
+that task will be put back in the queue for later. By default, Lumen will make 5 attempts per task before giving up. 
+
+Failed tasks can be viewed with Laravel's `php artisan queue:failed` command, and retried with `php artisan queue:retry`.

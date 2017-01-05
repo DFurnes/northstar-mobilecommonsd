@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use GuzzleHttp\Client;
 use Carbon\Carbon;
-use GuzzleHttp\Psr7\Response;
 use SimpleXMLElement;
+use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
 class MobileCommons
 {
@@ -31,6 +31,7 @@ class MobileCommons
         $this->client = new Client([
             'base_uri' => 'https://secure.mcommons.com/api/',
             'auth' => [$config['username'], $config['password']],
+            'timeout' => 15,
         ]);
     }
 
@@ -82,10 +83,10 @@ class MobileCommons
     /**
      * Parse XML from PSR-7 responses.
      *
-     * @param Response $response
+     * @param \Psr\Http\Message\ResponseInterface $response
      * @return SimpleXMLElement
      */
-    public function parseXml(Response $response)
+    public function parseXml(ResponseInterface $response)
     {
         return new SimpleXMLElement((string) $response->getBody() ?: '<root />', LIBXML_NONET);
     }

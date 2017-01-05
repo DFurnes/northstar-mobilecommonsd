@@ -3,12 +3,19 @@
 namespace App\Jobs;
 
 use Carbon\Carbon;
-use DoSomething\Gateway\Exceptions\ApiException;
-use DoSomething\Gateway\Northstar;
 use SimpleXMLElement;
+use DoSomething\Gateway\Northstar;
+use DoSomething\Gateway\Exceptions\ApiException;
 
 class SendUserToNorthstar extends Job
 {
+    /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'northstar';
+
     /**
      * Mobile Commons profile result.
      *

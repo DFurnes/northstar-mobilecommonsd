@@ -2,11 +2,18 @@
 
 namespace App\Jobs;
 
-use App\Services\MobileCommons;
 use Carbon\Carbon;
+use App\Services\MobileCommons;
 
-class LoadPaginatedResults extends Job
+class LoadResultsFromMobileCommons extends Job
 {
+    /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'mobilecommons';
+
     /**
      * Beginning of time frame that we're loading.
      *
@@ -22,7 +29,7 @@ class LoadPaginatedResults extends Job
     protected $end;
 
     /**
-     * ...
+     * The current page of results.
      *
      * @var int
      */
@@ -32,7 +39,7 @@ class LoadPaginatedResults extends Job
      * Create a new job instance.
      * @param Carbon $start
      * @param Carbon $end
-     * @param $page
+     * @param int $page
      */
     public function __construct(Carbon $start, Carbon $end, $page = 1)
     {
@@ -48,27 +55,19 @@ class LoadPaginatedResults extends Job
      */
     public function handle(MobileCommons $mobileCommons)
     {
-        app('log')->debug('Starting a queued job to load paginated MC results...');
-
-        $response = $mobileCommons->listAllProfiles(
-            $this->start, $this->end, $this->page
-        );
-
-        $profiles = $response->profiles;
+        $response = $mobileCommons->listAllProfiles($this->start, $this->end, $this->page);
+        app('log')->debug('Loaded page from MobileCommons: '.$this->start.' to '.$this->end.' ('.$this->page.')');
 
         // Transform the returned profiles to arrays & send to Northstar
-        foreach ($profiles->children() as $key => $profile) {
+        foreach ($response->profiles->children() as $key => $profile) {
             dispatch(new SendUserToNorthstar((string) $profile->asXML()));
         }
 
         // Get the number returned from: <profiles num="x">...</profiles>
         // If the number returned matches the limit, chances are there's another page...
-        $numReturned = (int) $profiles->attributes()->num;
+        $numReturned = (int) $response->profiles->attributes()->num;
         if ($numReturned === $mobileCommons->getLimit()) {
-            app('log')->debug('There\'s more results... kicking off a job for page '.($this->page + 1).'!');
             dispatch(new self($this->start, $this->end, $this->page + 1));
-        } else {
-            app('log')->debug('That\'s all for now, folks!');
         }
     }
 }

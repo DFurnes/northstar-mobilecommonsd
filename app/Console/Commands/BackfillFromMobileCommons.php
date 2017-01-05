@@ -53,6 +53,9 @@ class BackfillFromMobileCommons extends Command
 
             $end = Carbon::parse($start)->add($interval);
             dispatch(new LoadResultsFromMobileCommons($start, $end));
+
+            app('db')->table('progress')
+                ->updateOrInsert(['start' => $start, 'end' => $end], ['page' => 0, 'done' => false]);
         }
 
         $this->info(PHP_EOL . '✔ Jobs created!');

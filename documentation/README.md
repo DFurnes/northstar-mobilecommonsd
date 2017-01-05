@@ -15,6 +15,8 @@ continue working until they're done!
 `mobilecommons:fetch` synchronizes any recent profiles changes from Mobile Commons to the associated Northstar
 profile. It should run automatically every 5 minutes, [scheduled by the Artisan Kernel](https://laravel.com/docs/5.3/scheduling).
 
+`mobilecommons:status` displays a status report for Mobile Commons fetch jobs. 
+
 ### Implementation
 Both of the above commands rely on the [`LoadResultsFromMobileCommons`](https://github.com/DoSomething/northstar-mobilecommonsd/blob/dev/app/Jobs/LoadResultsFromMobileCommons.php)
 and [`SendUserToNorthstar`](https://github.com/DoSomething/northstar-mobilecommonsd/blob/dev/app/Jobs/SendUserToNorthstar.php) queued jobs.
@@ -28,7 +30,7 @@ We use Laravel's [built-in queue daemon](https://laravel.com/docs/5.3/queues#run
 handle retries and failures. This makes it easy for us to scale to meet demand (by increasing the number
 of processes assigned to a particular queue) and easily handle retries and tracking failures.
 
-To start a worker that will fetch user data from MobileCommons:
+To start a worker that will fetch user data from Mobile Commons:
  
 ```bash
 php artisan queue:work --queue=mobilecommons
@@ -39,10 +41,10 @@ To start a worker that will send any fetched users to Northstar:
 php artisan queue:work --queue=northstar
 ```
 
-It probably makes sense to have two or three Northstar queue workers per MobileCommons queue worker.
+It probably makes sense to have two or three Northstar queue workers per Mobile Commons queue worker.
 
 ### In case of emergency…
-If a task could not be completed successfully (for example, if MobileCommons or Northstar timeout or return an error),
+If a task could not be completed successfully (for example, if Mobile Commons or Northstar timeout or return an error),
 that task will be put back in the queue for later. By default, Lumen will make 5 attempts per task before giving up. 
 
 Failed tasks can be viewed with Laravel's `php artisan queue:failed` command, and retried with `php artisan queue:retry`.

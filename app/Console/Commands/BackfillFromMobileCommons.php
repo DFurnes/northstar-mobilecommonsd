@@ -46,10 +46,10 @@ class BackfillFromMobileCommons extends Command
         $periods = collect(new DatePeriod(Carbon::parse($start), $interval, Carbon::parse($end)));
 
         $this->comment('Queuing jobs to load segments from MobileCommons:');
-        $this->getOutput()->progressStart($periods->count());
+        $this->output->progressStart($periods->count());
 
         foreach ($periods as $start) {
-            $this->getOutput()->progressAdvance();
+            $this->output->progressAdvance();
 
             $end = Carbon::parse($start)->add($interval);
             dispatch(new LoadResultsFromMobileCommons($start, $end));

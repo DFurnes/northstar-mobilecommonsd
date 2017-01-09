@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         'mobilecommons:fetch' => Commands\FetchUpdatesFromMobileCommons::class,
         'mobilecommons:backfill' => Commands\BackfillFromMobileCommons::class,
+        'mobilecommons:status' => Commands\StatusCheck::class,
     ];
 
     /**

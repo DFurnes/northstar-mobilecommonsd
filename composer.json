@@ -9,7 +9,8 @@
         "dosomething/gateway": "1.0.0-rc15",
         "nesbot/carbon": "^1.21",
         "predis/predis": "^1.1",
-        "illuminate/redis": "~5.2"
+        "illuminate/redis": "~5.2",
+        "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

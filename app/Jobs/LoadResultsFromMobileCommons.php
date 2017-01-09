@@ -66,8 +66,13 @@ class LoadResultsFromMobileCommons extends Job
         // Get the number returned from: <profiles num="x">...</profiles>
         // If the number returned matches the limit, chances are there's another page...
         $numReturned = (int) $response->profiles->attributes()->num;
-        if ($numReturned === $mobileCommons->getLimit()) {
+        $done = $numReturned !== $mobileCommons->getLimit();
+
+        if (! $done) {
             dispatch(new self($this->start, $this->end, $this->page + 1));
         }
+
+        app('db')->table('progress')
+            ->updateOrInsert(['start' => $this->start, 'end' => $this->end], ['page' => $this->page, 'done' => $done]);
     }
 }

@@ -65,7 +65,8 @@ class SendUserToNorthstar extends Job
             'mobile' => (string) $profile->phone_number,
             'mobilecommons_id' => (string) $profile->attributes()->id,
             'mobilecommons_status' => $this->transformStatus($profile->status),
-            'source' => $this->transformSource($profile->source),
+            'source' => 'sms',
+            'source_detail' => $this->transformSource($profile->source),
             'created_at' => Carbon::parse((string) $profile->created_at)->timestamp,
         ];
 
@@ -94,7 +95,7 @@ class SendUserToNorthstar extends Job
     /**
      * Transform the contents of the `<profile><source ... /></profile>` field.
      *
-     * @param SimpleXMLElement[] $source
+     * @param SimpleXMLElement|SimpleXMLElement[] $source
      * @return string
      */
     public function transformSource($source)
@@ -112,7 +113,7 @@ class SendUserToNorthstar extends Job
         $type = array_get($sourceTokens, (string) $source->attributes()->type, 'other');
         $id = (string) $source->attributes()->id;
 
-        // e.g. 'mobilecommons:opt_in_path/4701'
-        return 'mobilecommons:'.$type.(! empty($id) ? '/' : '').$id;
+        // e.g. 'opt_in_path/4701'
+        return $type.(! empty($id) ? '/' : '').$id;
     }
 }

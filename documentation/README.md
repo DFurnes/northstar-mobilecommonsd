@@ -30,30 +30,15 @@ We use Laravel's [built-in queue daemon](https://laravel.com/docs/5.3/queues#run
 handle retries and failures. This makes it easy for us to scale to meet demand (by increasing the number
 of processes assigned to a particular queue) and easily handle retries and tracking failures.
 
-It probably makes sense to have 1 `mobilecommons` queue worker & around 5 `northstar` queue workers.
+The queue listeners are managed using [Supervisord](http://supervisord.org), as described in the [Laravel documentation](https://laravel.com/docs/5.3/queues#supervisor-configuration). There should be 1 Mobile Commons queue listener, and 5 Northstar queue listeners.
 
-To start a worker that will fetch user data from Mobile Commons:
- 
-```bash
-nohup php artisan queue:work --daemon --queue=mobilecommons &
-```
-
-To start a worker that will send any fetched users to Northstar:
-```bash
-nohup php artisan queue:work listen --daemon --queue=northstar &
-```
-
-To view the backgrounded queue workers:
+To view the status of the queue workers:
 
 ```sh
-ps aux | grep "php artisan"
+sudo supervisorctl status
 ```
 
-To monitor the number of jobs completed per second (credit to Sena):
-
-```sh
-TZ='GMT' watch -n 1 "grep \$(date +%T | cut -d' ' -f1) nohup.out | wc -l"
-```
+The configuration files for the two Supervisor jobs are stored in `/etc/supervisor/conf.d`.
 
 ### In case of emergency…
 If a task could not be completed successfully (for example, if Mobile Commons or Northstar timeout or return an error),

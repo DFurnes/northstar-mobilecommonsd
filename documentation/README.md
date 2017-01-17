@@ -35,12 +35,12 @@ It probably makes sense to have 1 `mobilecommons` queue worker & around 5 `north
 To start a worker that will fetch user data from Mobile Commons:
  
 ```bash
-nohup php artisan queue:listen --daemon --queue=mobilecommons
+nohup php artisan queue:work --daemon --queue=mobilecommons &
 ```
 
 To start a worker that will send any fetched users to Northstar:
 ```bash
-nohup php artisan queue:listen --daemon --queue=northstar
+nohup php artisan queue:work listen --daemon --queue=northstar &
 ```
 
 To view the backgrounded queue workers:

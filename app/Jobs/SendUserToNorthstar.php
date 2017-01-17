@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use SimpleXMLElement;
 use DoSomething\Gateway\Northstar;
 use DoSomething\Gateway\Exceptions\ApiException;
+use Illuminate\Contracts\Validation\ValidationException;
 
 class SendUserToNorthstar extends Job
 {
@@ -47,8 +48,14 @@ class SendUserToNorthstar extends Job
             $northstarUser = $northstar->createUser($user);
 
             app('log')->debug('Sent user '.$mc_id.' to NS... saved to '.$northstarUser->id.'!');
+        } catch (ValidationException $e) {
+            app('log')->error('Encountered validation error saving user '.$mc_id.' to NS.', ['error' => $e->errors()->all()]);
+
+            $this->failed();
         } catch (ApiException $e) {
             app('log')->error('Encountered error saving user '.$mc_id.' to NS.', ['error' => $e]);
+
+            $this->failed();
         }
     }
 

@@ -26,6 +26,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        // Queue a new "fetch" every 5 minutes. This will grab all profiles
+        // that were updated in the last 10 minutes (overlap intended).
         $schedule->command('mobilecommons:fetch')->everyFiveMinutes();
+
+        // Restart the queue daemons every hour to prevent memory issues.
+        $schedule->command('queue:restart')->hourly();
     }
 }

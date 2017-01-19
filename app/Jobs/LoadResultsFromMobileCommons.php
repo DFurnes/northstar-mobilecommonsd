@@ -60,6 +60,7 @@ class LoadResultsFromMobileCommons extends Job
 
         // Transform the returned profiles to arrays & send to Northstar
         foreach ($response->profiles->children() as $key => $profile) {
+            app('log')->debug('Queued Northstar job for '.$profile->attributes()->id.' from '.$this->start.'-'.$this->end.' page '.$this->page.'.');
             dispatch(new SendUserToNorthstar((string) $profile->asXML()));
         }
 

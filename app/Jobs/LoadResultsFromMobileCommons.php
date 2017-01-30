@@ -12,7 +12,7 @@ class LoadResultsFromMobileCommons extends Job
      *
      * @var string|null
      */
-    public $queue = 'mobilecommons';
+    public $queue = 'nsmcd-mobilecommons';
 
     /**
      * Beginning of time frame that we're loading.

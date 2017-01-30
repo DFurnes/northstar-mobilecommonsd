@@ -15,7 +15,7 @@ class SendUserToNorthstar extends Job
      *
      * @var string|null
      */
-    public $queue = 'northstar';
+    public $queue = 'nsmcd-northstar';
 
     /**
      * Mobile Commons profile result.

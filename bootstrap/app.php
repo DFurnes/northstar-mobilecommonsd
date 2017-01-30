@@ -24,6 +24,7 @@ $app = new Laravel\Lumen\Application(
 );
 
 // Register configuration files
+$app->configure('queue');
 $app->configure('services');
 
 /*

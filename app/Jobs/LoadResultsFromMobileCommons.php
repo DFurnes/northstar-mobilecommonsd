@@ -65,7 +65,12 @@ class LoadResultsFromMobileCommons extends Job
             // Remove extra markup from the XML so we don't have messages that won't "fit" in the queue.
             unset($profile->address, $profile->custom_columns, $profile->location, $profile->clicks, $profile->integrations);
 
-            dispatch(new SendUserToNorthstar((string) $profile->asXML()));
+            $xml = (string) $profile->asXML();
+            if (strlen($xml) > 262144) {
+                app('log')->warning('Long XML payload queued for '.$profile->attributes()->id, ['xml' => $xml]);
+            }
+
+            dispatch(new SendUserToNorthstar($xml));
         }
 
         // Get the number returned from: <profiles num="x">...</profiles>

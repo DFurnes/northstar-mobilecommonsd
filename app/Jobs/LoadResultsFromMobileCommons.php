@@ -63,7 +63,8 @@ class LoadResultsFromMobileCommons extends Job
             app('log')->debug('Queued Northstar job for '.$profile->attributes()->id.' from '.$this->start.'-'.$this->end.' page '.$this->page.'.');
 
             // Remove extra markup from the XML so we don't have messages that won't "fit" in the queue.
-            unset($profile->address, $profile->custom_columns, $profile->location, $profile->clicks, $profile->integrations);
+            unset($profile->address, $profile->custom_columns, $profile->location, $profile->clicks,
+                  $profile->subscriptions, $profile->integrations);
 
             $xml = (string) $profile->asXML();
             if (strlen($xml) > 262144) {

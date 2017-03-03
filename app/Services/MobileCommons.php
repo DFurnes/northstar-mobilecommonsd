@@ -31,7 +31,7 @@ class MobileCommons
         $this->client = new Client([
             'base_uri' => 'https://secure.mcommons.com/api/',
             'auth' => [$config['username'], $config['password']],
-            'timeout' => 15,
+            'timeout' => 45, // Mobile Commons can be sloooooooow.
         ]);
     }
 

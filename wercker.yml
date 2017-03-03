@@ -1,32 +1,13 @@
-box: blisteringherb/scholarship@0.0.6
+box: dosomething/ds-docker-php
 
 build:
   # The steps that will be executed on build
   steps:
     - script:
-        name: update apt
-        code: |-
-          sudo apt-get update
-          sudo apt-get -y install software-properties-common
-          sudo LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
-          sudo apt-get update
-    - script:
-        name: update composer
-        code: sudo composer self-update
-    - script:
-        name: install mysql
-        code: |-
-          export DEBIAN_FRONTEND=noninteractive
-          sudo -E apt-get -q -y install mysql-server
-          mysqladmin -u root password root
-          mysql -u root -proot -e "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret';"
-          mysql -u root -proot -e "GRANT ALL PRIVILEGES ON *.* TO 'homestead'@'localhost' WITH GRANT OPTION;"
-    - script:
-          name: update php & install extensions
-          code: |-
-            sudo apt-get install php5.6 -y
-            sudo apt-get install php5.6-curl php5.6-mbstring php5.6-mcrypt php5.6-mysql php5.6-xml php5.6-zip
-    - leipert/composer-install@0.0.1
+        name: start mysql
+        code: sudo service mysql start
+    - leipert/composer-install@0.9.1
+    - wercker/bundle-install@1.1.1
     - script:
         name: run phpunit tests
         code: |-

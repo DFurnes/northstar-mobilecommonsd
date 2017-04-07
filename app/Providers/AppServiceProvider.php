@@ -21,4 +21,19 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
     }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        /** @var \DoSomething\StatHat\Client $stathat */
+        $stathat = app('stathat');
+
+        app('queue')->failing(function () use ($stathat) {
+            $stathat->ezCount('job failed');
+        });
+    }
 }

@@ -5,8 +5,6 @@ namespace App\Jobs;
 use Carbon\Carbon;
 use SimpleXMLElement;
 use DoSomething\Gateway\Northstar;
-use DoSomething\Gateway\Exceptions\ApiException;
-use Illuminate\Contracts\Validation\ValidationException;
 
 class SendUserToNorthstar extends Job
 {
@@ -44,19 +42,10 @@ class SendUserToNorthstar extends Job
         $user = $this->transformProfile($xml);
         $mc_id = (string) $user['mobilecommons_id'];
 
-        try {
-            $northstarUser = $northstar->createUser($user);
+        // Send the transformed profile to Northstar's upsert user endpoint.
+        $northstarUser = $northstar->createUser($user);
 
-            app('log')->debug('Sent user '.$mc_id.' to NS... saved to '.$northstarUser->id.'!');
-        } catch (ValidationException $e) {
-            app('log')->error('Encountered validation error saving user '.$mc_id.' to NS.', ['error' => $e->errors()->all()]);
-
-            $this->failed();
-        } catch (ApiException $e) {
-            app('log')->error('Encountered error saving user '.$mc_id.' to NS.', ['error' => $e]);
-
-            $this->failed();
-        }
+        info('Sent user '.$mc_id.' to NS... saved to '.$northstarUser->id.'!');
     }
 
     /**
@@ -68,7 +57,6 @@ class SendUserToNorthstar extends Job
     public function transformProfile(SimpleXMLElement $profile)
     {
         $payload = [
-            'first_name' => (string) $profile->first_name,
             'mobile' => (string) $profile->phone_number,
             'mobilecommons_id' => (string) $profile->attributes()->id,
             'mobilecommons_status' => $this->transformStatus($profile->status),

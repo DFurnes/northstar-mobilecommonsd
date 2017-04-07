@@ -78,11 +78,11 @@ $app->singleton(
 |
 */
 
-// Include the Redis service provider for Redis support.
+$app->register(DoSomething\Gateway\Laravel\GatewayServiceProvider::class);
+$app->register(DoSomething\StatHat\StatHatServiceProvider::class);
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
 
 $app->register(App\Providers\AppServiceProvider::class);
-$app->register(DoSomething\Gateway\Laravel\GatewayServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

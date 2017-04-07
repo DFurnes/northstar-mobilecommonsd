@@ -14,6 +14,12 @@ return [
     |
     */
 
+    'stathat' => [
+        'debug' => env('APP_DEBUG', false),
+        'ez_key' => env('STATHAT_EZ_KEY'),
+        'prefix' => env('STATHAT_APP_NAME', 'nsmcd') . ' - ',
+    ],
+
     'northstar' => [
         'grant' => 'client_credentials',
         'url' => env('NORTHSTAR_URL'),

@@ -68,7 +68,6 @@ class SendUserToNorthstar extends Job
     public function transformProfile(SimpleXMLElement $profile)
     {
         $payload = [
-            'first_name' => (string) $profile->first_name,
             'mobile' => (string) $profile->phone_number,
             'mobilecommons_id' => (string) $profile->attributes()->id,
             'mobilecommons_status' => $this->transformStatus($profile->status),
